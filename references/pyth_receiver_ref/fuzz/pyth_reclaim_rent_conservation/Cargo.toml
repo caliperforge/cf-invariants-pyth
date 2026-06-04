@@ -27,4 +27,4 @@ name = "invariant_test"
 path = "src/main.rs"
 
 [features]
-invariant_reclaim_rent_conservation = []
+invariant_reclaim_rent_returns_to_write_authority = []

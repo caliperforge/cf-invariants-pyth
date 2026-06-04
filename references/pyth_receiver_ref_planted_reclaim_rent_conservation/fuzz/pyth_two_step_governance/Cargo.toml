@@ -29,4 +29,4 @@ name = "invariant_test"
 path = "src/main.rs"
 
 [features]
-invariant_two_step_governance = []
+invariant_two_step_governance_atomic = []
