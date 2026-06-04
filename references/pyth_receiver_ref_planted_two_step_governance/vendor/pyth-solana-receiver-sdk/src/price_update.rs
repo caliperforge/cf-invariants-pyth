@@ -1,0 +1,250 @@
+// CF-PORT: 1:1 vendor of target_chains/solana/pyth_solana_receiver_sdk/src/price_update.rs;
+//   upstream `mod tests` block stripped (depends on solana_borsh v0_10 dev-dependency and on
+//   PriceFeedMessage / Clock test scaffolding outside the receiver's compile graph).
+// CF-PORT: upstream `BorshSchema` derives on PriceUpdateV2 / TwapUpdate / TwapPrice /
+//   VerificationLevel removed. BorshSchema is IDL-only; not exercised at runtime by the
+//   receiver. Upstream's `BorshSchema` resolves to anchor-lang 0.31.x's borsh-0.10 re-export,
+//   which matches pythnet_sdk's pinned borsh-0.10. Under our anchor-lang 1.0.1 rails, the
+//   prelude re-exports borsh 1.6, so the derive would try to traverse PriceFeedMessage's
+//   borsh-0.10 schema impl with a borsh-1.6 generator and fail. Dropping the derive is the
+//   tightest, IDL-only surface change.
+pub use pythnet_sdk::messages::{FeedId, PriceFeedMessage};
+use {
+    crate::{check, error::GetPriceError},
+    anchor_lang::prelude::*,
+};
+
+/// Pyth price updates are bridged to all blockchains via Wormhole.
+/// Using the price updates on another chain requires verifying the signatures of the Wormhole guardians.
+/// The usual process is to check the signatures for two thirds of the total number of guardians, but this can be cumbersome on Solana because of the transaction size limits,
+/// so we also allow for partial verification.
+///
+/// This enum represents how much a price update has been verified:
+/// - If `Full`, we have verified the signatures for two thirds of the current guardians.
+/// - If `Partial`, only `num_signatures` guardian signatures have been checked.
+///
+/// # Warning
+/// Using partially verified price updates is dangerous, as it lowers the threshold of guardians that need to collude to produce a malicious price update.
+#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone, PartialEq, Debug)]
+pub enum VerificationLevel {
+    Partial {
+        #[allow(unused)]
+        num_signatures: u8,
+    },
+    Full,
+}
+
+impl VerificationLevel {
+    /// Compare two `VerificationLevel`.
+    /// `Full` is always greater than `Partial`, and `Partial` with more signatures is greater than `Partial` with fewer signatures.
+    pub fn gte(&self, other: VerificationLevel) -> bool {
+        match self {
+            VerificationLevel::Full => true,
+            VerificationLevel::Partial { num_signatures } => match other {
+                VerificationLevel::Full => false,
+                VerificationLevel::Partial {
+                    num_signatures: other_num_signatures,
+                } => *num_signatures >= other_num_signatures,
+            },
+        }
+    }
+}
+
+/// A price update account. This account is used by the Pyth Receiver program to store a verified price update from a Pyth price feed.
+/// It contains:
+/// - `write_authority`: The write authority for this account. This authority can close this account to reclaim rent or update the account to contain a different price update.
+/// - `verification_level`: The [`VerificationLevel`] of this price update. This represents how many Wormhole guardian signatures have been verified for this price update.
+/// - `price_message`: The actual price update.
+/// - `posted_slot`: The slot at which this price update was posted.
+#[account]
+pub struct PriceUpdateV2 {
+    pub write_authority: Pubkey,
+    pub verification_level: VerificationLevel,
+    pub price_message: PriceFeedMessage,
+    pub posted_slot: u64,
+}
+
+impl PriceUpdateV2 {
+    pub const LEN: usize = 8 + 32 + 2 + 32 + 8 + 8 + 4 + 8 + 8 + 8 + 8 + 8;
+}
+/// A time weighted average price account.
+/// This account is used by the Pyth Receiver program to store a TWAP update from a Pyth price feed.
+/// TwapUpdates can only be created after the client has verified the VAAs via the Wormhole contract.
+/// Check out `target_chains/solana/cli/src/main.rs` for an example of how to do this.
+///
+/// It contains:
+/// - `write_authority`: The write authority for this account. This authority can close this account to reclaim rent or update the account to contain a different TWAP update.
+/// - `twap`: The actual TWAP update.
+#[account]
+pub struct TwapUpdate {
+    pub write_authority: Pubkey,
+    pub twap: TwapPrice,
+}
+
+impl TwapUpdate {
+    pub const LEN: usize = (
+        8 // account discriminator (anchor)
+        + 32 // write_authority
+        + (32 + 8 + 8 + 8 + 8 + 4 + 4)
+        // twap
+    );
+
+    /// Get a `TwapPrice` from a `TwapUpdate` account for a given `FeedId`.
+    ///
+    /// # Warning
+    /// This function does not check :
+    /// - How recent the price is
+    /// - If the TWAP's window size is expected
+    /// - Whether the price update has been verified
+    ///
+    /// It is therefore unsafe to use this function without any extra checks,
+    /// as it allows for the possibility of using unverified, outdated, or arbitrary window length twap updates.
+    pub fn get_twap_unchecked(
+        &self,
+        feed_id: &FeedId,
+    ) -> std::result::Result<TwapPrice, GetPriceError> {
+        check!(
+            self.twap.feed_id == *feed_id,
+            GetPriceError::MismatchedFeedId
+        );
+        Ok(self.twap)
+    }
+    /// Get a `TwapPrice` from a `TwapUpdate` account for a given `FeedId` no older than `maximum_age` with a specific window size.
+    pub fn get_twap_no_older_than(
+        &self,
+        clock: &Clock,
+        maximum_age: u64,
+        window_seconds: u64,
+        feed_id: &FeedId,
+    ) -> std::result::Result<TwapPrice, GetPriceError> {
+        // Ensure the update isn't outdated
+        let twap_price = self.get_twap_unchecked(feed_id)?;
+        check!(
+            twap_price
+                .end_time
+                .saturating_add(maximum_age.try_into().unwrap())
+                >= clock.unix_timestamp,
+            GetPriceError::PriceTooOld
+        );
+
+        // Ensure the twap window size is as expected
+        let actual_window = twap_price.end_time.saturating_sub(twap_price.start_time);
+        check!(
+            actual_window == i64::try_from(window_seconds).unwrap(),
+            GetPriceError::InvalidWindowSize
+        );
+
+        Ok(twap_price)
+    }
+}
+/// The time weighted average price & conf for a feed over the window [start_time, end_time].
+/// This type is used to persist the calculated TWAP in TwapUpdate accounts on Solana.
+#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone, PartialEq, Debug)]
+pub struct TwapPrice {
+    /// `FeedId` but avoid the type alias because of compatibility issues with Anchor's `idl-build` feature.
+    pub feed_id: [u8; 32],
+    pub start_time: i64,
+    pub end_time: i64,
+    pub price: i64,
+    pub conf: u64,
+    pub exponent: i32,
+    /// Ratio out of 1_000_000, where a value of 1_000_000 represents
+    /// all slots were missed and 0 represents no slots were missed.
+    pub down_slots_ratio: u32,
+}
+
+/// A Pyth price.
+/// The actual price is `(price ± conf)* 10^exponent`. `publish_time` may be used to check the recency of the price.
+#[derive(PartialEq, Debug, Clone, Copy)]
+pub struct Price {
+    pub price: i64,
+    pub conf: u64,
+    pub exponent: i32,
+    pub publish_time: i64,
+}
+
+impl PriceUpdateV2 {
+    /// Get a `Price` from a `PriceUpdateV2` account for a given `FeedId`.
+    ///
+    /// # Warning
+    /// This function does not check :
+    /// - How recent the price is
+    /// - Whether the price update has been verified
+    ///
+    /// It is therefore unsafe to use this function without any extra checks, as it allows for the possibility of using unverified or outdated price updates.
+    pub fn get_price_unchecked(
+        &self,
+        feed_id: &FeedId,
+    ) -> std::result::Result<Price, GetPriceError> {
+        check!(
+            self.price_message.feed_id == *feed_id,
+            GetPriceError::MismatchedFeedId
+        );
+        Ok(Price {
+            price: self.price_message.price,
+            conf: self.price_message.conf,
+            exponent: self.price_message.exponent,
+            publish_time: self.price_message.publish_time,
+        })
+    }
+
+    /// Get a `Price` from a `PriceUpdateV2` account for a given `FeedId` no older than `maximum_age` with customizable verification level.
+    ///
+    /// # Warning
+    /// Lowering the verification level from `Full` to `Partial` increases the risk of using a malicious price update.
+    /// Please read the documentation for [`VerificationLevel`] for more information.
+    pub fn get_price_no_older_than_with_custom_verification_level(
+        &self,
+        clock: &Clock,
+        maximum_age: u64,
+        feed_id: &FeedId,
+        verification_level: VerificationLevel,
+    ) -> std::result::Result<Price, GetPriceError> {
+        check!(
+            self.verification_level.gte(verification_level),
+            GetPriceError::InsufficientVerificationLevel
+        );
+        let price = self.get_price_unchecked(feed_id)?;
+        check!(
+            price
+                .publish_time
+                .saturating_add(maximum_age.try_into().unwrap())
+                >= clock.unix_timestamp,
+            GetPriceError::PriceTooOld
+        );
+        Ok(price)
+    }
+
+    /// Get a `Price` from a `PriceUpdateV2` account for a given `FeedId` no older than `maximum_age` with `Full` verification.
+    pub fn get_price_no_older_than(
+        &self,
+        clock: &Clock,
+        maximum_age: u64,
+        feed_id: &FeedId,
+    ) -> std::result::Result<Price, GetPriceError> {
+        self.get_price_no_older_than_with_custom_verification_level(
+            clock,
+            maximum_age,
+            feed_id,
+            VerificationLevel::Full,
+        )
+    }
+}
+
+/// Get a `FeedId` from a hex string.
+///
+/// Price feed ids are a 32 byte unique identifier for each price feed in the Pyth network.
+/// They are sometimes represented as a 64 character hex string (with or without a 0x prefix).
+pub fn get_feed_id_from_hex(input: &str) -> std::result::Result<FeedId, GetPriceError> {
+    let mut feed_id: FeedId = [0; 32];
+    match input.len() {
+        66 => feed_id.copy_from_slice(
+            &hex::decode(&input[2..]).map_err(|_| GetPriceError::FeedIdNonHexCharacter)?,
+        ),
+        64 => feed_id.copy_from_slice(
+            &hex::decode(input).map_err(|_| GetPriceError::FeedIdNonHexCharacter)?,
+        ),
+        _ => return Err(GetPriceError::FeedIdMustBe32Bytes),
+    }
+    Ok(feed_id)
+}

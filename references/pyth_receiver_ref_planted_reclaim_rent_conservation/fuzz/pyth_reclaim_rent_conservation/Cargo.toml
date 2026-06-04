@@ -1,0 +1,30 @@
+[package]
+name = "pyth_reclaim_rent_conservation_fuzz"
+version = "0.1.0"
+edition = "2021"
+description = "Crucible fuzz harness for pyth_receiver_ref — reclaim_rent_conservation invariant on reclaim_rent."
+license = "Apache-2.0"
+
+[workspace]
+
+[dependencies]
+crucible-fuzzer       = { path = "../../../../../crucible/crates/crucible-fuzzer" }
+crucible-test-context = { path = "../../../../../crucible/crates/crucible-test-context" }
+anchor-lang = { version = "=1.0.1", features = ["init-if-needed"] }
+arbitrary = { version = "1", features = ["derive"] }
+ctrlc = "3.4"
+libafl = { version = "0.15.1", features = ["std", "cli", "prelude"] }
+libafl_bolts = { version = "0.15.1", features = ["std"] }
+pyth-solana-receiver = { path = "../../programs/pyth-solana-receiver", features = ["no-entrypoint"] }
+pyth-solana-receiver-sdk = { path = "../../vendor/pyth-solana-receiver-sdk" }
+pythnet-sdk = { path = "../../vendor/pythnet-sdk", features = ["solana-program"] }
+solana-keypair = "3.0"
+solana-pubkey = "3.0"
+solana-signer = "3.0"
+
+[[bin]]
+name = "invariant_test"
+path = "src/main.rs"
+
+[features]
+invariant_reclaim_rent_conservation = []

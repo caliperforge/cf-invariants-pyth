@@ -1,0 +1,359 @@
+base64 v0.21.7
+└── anchor-lang v1.0.1
+    ├── pyth-solana-receiver v0.2.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/programs/pyth-solana-receiver)
+    ├── pyth-solana-receiver-sdk v1.2.0 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/vendor/pyth-solana-receiver-sdk)
+    │   └── pyth-solana-receiver v0.2.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/programs/pyth-solana-receiver)
+    ├── pythnet-sdk v2.3.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/vendor/pythnet-sdk)
+    │   ├── pyth-solana-receiver v0.2.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/programs/pyth-solana-receiver)
+    │   └── pyth-solana-receiver-sdk v1.2.0 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/vendor/pyth-solana-receiver-sdk) (*)
+    └── wormhole-core-bridge-solana v0.0.1-cf-stub (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/vendor/wormhole-core-bridge-stub)
+        └── pyth-solana-receiver v0.2.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/programs/pyth-solana-receiver)
+
+base64 v0.22.1
+└── solana-sysvar v3.1.1
+    ├── anchor-lang v1.0.1 (*)
+    └── solana-stake-interface v2.0.2
+        └── anchor-lang v1.0.1 (*)
+
+borsh v0.10.4
+└── pythnet-sdk v2.3.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/vendor/pythnet-sdk) (*)
+
+borsh v1.6.1
+├── anchor-lang v1.0.1 (*)
+├── solana-address v2.6.1
+│   ├── solana-account-info v3.1.1
+│   │   ├── anchor-lang v1.0.1 (*)
+│   │   ├── solana-cpi v3.1.0
+│   │   │   ├── anchor-lang v1.0.1 (*)
+│   │   │   └── solana-stake-interface v2.0.2 (*)
+│   │   ├── solana-instructions-sysvar v3.0.1
+│   │   │   └── anchor-lang v1.0.1 (*)
+│   │   ├── solana-invoke v0.5.0
+│   │   │   └── anchor-lang v1.0.1 (*)
+│   │   ├── solana-program-entrypoint v3.1.1
+│   │   │   ├── anchor-lang v1.0.1 (*)
+│   │   │   ├── solana-invoke v0.5.0 (*)
+│   │   │   └── solana-sysvar v3.1.1 (*)
+│   │   └── solana-sysvar v3.1.1 (*)
+│   ├── solana-address v1.1.0
+│   │   └── solana-pubkey v3.0.0
+│   │       ├── anchor-lang v1.0.1 (*)
+│   │       ├── solana-stake-interface v2.0.2 (*)
+│   │       └── solana-system-interface v2.0.0
+│   │           ├── anchor-lang v1.0.1 (*)
+│   │           ├── pyth-solana-receiver v0.2.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/programs/pyth-solana-receiver)
+│   │           └── solana-stake-interface v2.0.2 (*)
+│   ├── solana-pubkey v4.2.0
+│   │   ├── solana-cpi v3.1.0 (*)
+│   │   ├── solana-feature-gate-interface v3.1.0
+│   │   │   └── anchor-lang v1.0.1 (*)
+│   │   ├── solana-instruction v3.4.0
+│   │   │   ├── anchor-lang v1.0.1 (*)
+│   │   │   ├── solana-cpi v3.1.0 (*)
+│   │   │   ├── solana-instructions-sysvar v3.0.1 (*)
+│   │   │   ├── solana-invoke v0.5.0 (*)
+│   │   │   ├── solana-loader-v3-interface v6.1.1
+│   │   │   │   └── anchor-lang v1.0.1 (*)
+│   │   │   ├── solana-stable-layout v3.0.1
+│   │   │   │   └── solana-invoke v0.5.0 (*)
+│   │   │   ├── solana-stake-interface v2.0.2 (*)
+│   │   │   ├── solana-system-interface v2.0.0 (*)
+│   │   │   ├── solana-system-interface v3.2.0
+│   │   │   │   └── solana-loader-v3-interface v6.1.1 (*)
+│   │   │   └── solana-sysvar v3.1.1 (*)
+│   │   ├── solana-loader-v3-interface v6.1.1 (*)
+│   │   ├── solana-program-entrypoint v3.1.1 (*)
+│   │   ├── solana-serialize-utils v3.1.2
+│   │   │   └── solana-instructions-sysvar v3.0.1 (*)
+│   │   ├── solana-stable-layout v3.0.1 (*)
+│   │   └── solana-sysvar v3.1.1 (*)
+│   ├── solana-sdk-ids v3.1.0
+│   │   ├── anchor-lang v1.0.1 (*)
+│   │   ├── solana-clock v3.1.0
+│   │   │   ├── anchor-lang v1.0.1 (*)
+│   │   │   ├── solana-stake-interface v2.0.2 (*)
+│   │   │   └── solana-sysvar v3.1.1 (*)
+│   │   ├── solana-epoch-rewards v3.0.2
+│   │   │   └── solana-sysvar v3.1.1 (*)
+│   │   ├── solana-epoch-schedule v3.1.0
+│   │   │   └── solana-sysvar v3.1.1 (*)
+│   │   ├── solana-feature-gate-interface v3.1.0 (*)
+│   │   ├── solana-instructions-sysvar v3.0.1 (*)
+│   │   ├── solana-last-restart-slot v3.0.1
+│   │   │   └── solana-sysvar v3.1.1 (*)
+│   │   ├── solana-loader-v3-interface v6.1.1 (*)
+│   │   ├── solana-rent v3.1.0
+│   │   │   └── solana-sysvar v3.1.1 (*)
+│   │   ├── solana-slot-hashes v3.0.2
+│   │   │   └── solana-sysvar v3.1.1 (*)
+│   │   ├── solana-slot-history v3.0.1
+│   │   │   └── solana-sysvar v3.1.1 (*)
+│   │   ├── solana-sysvar v3.1.1 (*)
+│   │   └── solana-sysvar-id v3.1.0
+│   │       ├── anchor-lang v1.0.1 (*)
+│   │       ├── solana-clock v3.1.0 (*)
+│   │       ├── solana-epoch-rewards v3.0.2 (*)
+│   │       ├── solana-epoch-schedule v3.1.0 (*)
+│   │       ├── solana-instructions-sysvar v3.0.1 (*)
+│   │       ├── solana-last-restart-slot v3.0.1 (*)
+│   │       ├── solana-rent v3.1.0 (*)
+│   │       ├── solana-slot-hashes v3.0.2 (*)
+│   │       ├── solana-slot-history v3.0.1 (*)
+│   │       ├── solana-stake-interface v2.0.2 (*)
+│   │       └── solana-sysvar v3.1.1 (*)
+│   ├── solana-system-interface v3.2.0 (*)
+│   └── solana-sysvar-id v3.1.0 (*)
+└── solana-program-error v3.0.1
+    ├── anchor-lang v1.0.1 (*)
+    ├── solana-account-info v3.1.1 (*)
+    ├── solana-address v2.6.1 (*)
+    ├── solana-cpi v3.1.0 (*)
+    ├── solana-feature-gate-interface v3.1.0 (*)
+    ├── solana-instruction-error v2.3.0
+    │   ├── solana-instruction v3.4.0 (*)
+    │   ├── solana-instructions-sysvar v3.0.1 (*)
+    │   └── solana-serialize-utils v3.1.2 (*)
+    ├── solana-instructions-sysvar v3.0.1 (*)
+    ├── solana-program-entrypoint v3.1.1 (*)
+    ├── solana-program-pack v3.1.0
+    │   └── anchor-lang v1.0.1 (*)
+    ├── solana-stake-interface v2.0.2 (*)
+    ├── solana-system-interface v2.0.0 (*)
+    ├── solana-system-interface v3.2.0 (*)
+    └── solana-sysvar v3.1.1 (*)
+
+borsh-derive v0.10.4 (proc-macro)
+└── borsh v0.10.4 (*)
+
+borsh-derive v1.6.1 (proc-macro)
+└── borsh v1.6.1 (*)
+
+digest v0.10.7
+├── curve25519-dalek v4.1.3
+│   └── solana-address v2.6.1 (*)
+├── ecdsa v0.16.9
+│   └── k256 v0.13.4
+│       └── solana-secp256k1-recover v3.1.1
+│           └── pyth-solana-receiver v0.2.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/programs/pyth-solana-receiver)
+├── elliptic-curve v0.13.8
+│   ├── ecdsa v0.16.9 (*)
+│   └── k256 v0.13.4 (*)
+├── hmac v0.12.1
+│   └── rfc6979 v0.4.0
+│       └── ecdsa v0.16.9 (*)
+├── sha2 v0.10.9
+│   ├── k256 v0.13.4 (*)
+│   └── solana-sha256-hasher v3.1.0
+│       └── solana-address v2.6.1 (*)
+├── sha3 v0.10.9
+│   └── pythnet-sdk v2.3.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/vendor/pythnet-sdk) (*)
+└── signature v2.2.0
+    ├── ecdsa v0.16.9 (*)
+    └── k256 v0.13.4 (*)
+
+digest v0.10.7
+└── sha2 v0.10.9
+    ├── anchor-lang-idl v0.1.2
+    │   └── anchor-attribute-program v1.0.2 (proc-macro)
+    │       └── anchor-lang v1.0.1 (*)
+    └── anchor-syn v1.0.2
+        ├── anchor-attribute-account v1.0.2 (proc-macro)
+        │   └── anchor-lang v1.0.1 (*)
+        ├── anchor-attribute-constant v1.0.2 (proc-macro)
+        │   └── anchor-lang v1.0.1 (*)
+        ├── anchor-attribute-error v1.0.2 (proc-macro)
+        │   └── anchor-lang v1.0.1 (*)
+        ├── anchor-attribute-event v1.0.2 (proc-macro)
+        │   └── anchor-lang v1.0.1 (*)
+        ├── anchor-attribute-program v1.0.2 (proc-macro) (*)
+        ├── anchor-derive-accounts v1.0.2 (proc-macro)
+        │   └── anchor-lang v1.0.1 (*)
+        └── anchor-derive-serde v1.0.2 (proc-macro)
+            └── anchor-lang v1.0.1 (*)
+
+generic-array v0.14.9
+├── block-buffer v0.10.4
+│   ├── digest v0.10.7 (*)
+│   └── digest v0.10.7 (*)
+└── crypto-common v0.1.6
+    ├── digest v0.10.7 (*)
+    └── digest v0.10.7 (*)
+
+generic-array v0.14.9
+├── crypto-bigint v0.5.5
+│   └── elliptic-curve v0.13.8 (*)
+├── elliptic-curve v0.13.8 (*)
+└── sec1 v0.7.3
+    └── elliptic-curve v0.13.8 (*)
+
+hashbrown v0.13.2
+└── borsh v0.10.4 (*)
+
+hashbrown v0.17.1
+└── indexmap v2.14.0
+    └── toml_edit v0.25.12+spec-1.1.0
+        └── proc-macro-crate v3.5.0
+            ├── anchor-derive-serde v1.0.2 (proc-macro) (*)
+            └── borsh-derive v1.6.1 (proc-macro) (*)
+
+once_cell v1.21.4
+└── borsh-derive v1.6.1 (proc-macro) (*)
+
+once_cell v1.21.4
+├── ahash v0.8.12
+│   └── hashbrown v0.13.2 (*)
+└── k256 v0.13.4 (*)
+
+proc-macro-crate v0.1.5
+└── borsh-derive v0.10.4 (proc-macro) (*)
+
+proc-macro-crate v3.5.0 (*)
+
+serde v1.0.228
+├── bincode v1.3.3
+│   ├── anchor-lang v1.0.1 (*)
+│   ├── pythnet-sdk v2.3.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/vendor/pythnet-sdk) (*)
+│   ├── solana-instruction v3.4.0 (*)
+│   └── solana-sysvar v3.1.1 (*)
+├── bv v0.11.1
+│   └── solana-slot-history v3.0.1 (*)
+├── hex v0.4.3
+│   ├── pyth-solana-receiver-sdk v1.2.0 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/vendor/pyth-solana-receiver-sdk) (*)
+│   └── pythnet-sdk v2.3.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/vendor/pythnet-sdk) (*)
+├── pythnet-sdk v2.3.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/vendor/pythnet-sdk) (*)
+├── solana-address v2.6.1 (*)
+├── solana-clock v3.1.0 (*)
+├── solana-epoch-rewards v3.0.2 (*)
+├── solana-epoch-schedule v3.1.0 (*)
+├── solana-fee-calculator v3.2.1
+│   └── solana-sysvar v3.1.1 (*)
+├── solana-hash v4.4.0
+│   ├── solana-epoch-rewards v3.0.2 (*)
+│   ├── solana-keccak-hasher v3.1.0
+│   │   └── pyth-solana-receiver v0.2.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/programs/pyth-solana-receiver)
+│   ├── solana-sha256-hasher v3.1.0 (*)
+│   ├── solana-slot-hashes v3.0.2 (*)
+│   └── solana-sysvar v3.1.1 (*)
+├── solana-instruction v3.4.0 (*)
+├── solana-last-restart-slot v3.0.1 (*)
+├── solana-loader-v3-interface v6.1.1 (*)
+├── solana-rent v3.1.0 (*)
+├── solana-slot-hashes v3.0.2 (*)
+├── solana-slot-history v3.0.1 (*)
+├── solana-stake-interface v2.0.2 (*)
+├── solana-system-interface v2.0.0 (*)
+├── solana-system-interface v3.2.0 (*)
+└── solana-sysvar v3.1.1 (*)
+
+serde v1.0.228
+├── anchor-lang-idl v0.1.2 (*)
+├── anchor-lang-idl-spec v0.1.0
+│   └── anchor-lang-idl v0.1.2 (*)
+├── anchor-syn v1.0.2 (*)
+└── toml v0.5.11
+    └── proc-macro-crate v0.1.5 (*)
+
+serde_core v1.0.228
+├── serde v1.0.228 (*)
+└── serde_bytes v0.11.19
+    └── solana-loader-v3-interface v6.1.1 (*)
+
+serde_core v1.0.228
+├── serde v1.0.228 (*)
+└── serde_json v1.0.150
+    └── anchor-lang-idl v0.1.2 (*)
+
+sha2 v0.10.9 (*)
+
+sha2 v0.10.9 (*)
+
+solana-address v1.1.0 (*)
+
+solana-address v2.6.1 (*)
+
+solana-define-syscall v3.0.0
+├── anchor-lang v1.0.1 (*)
+└── solana-invoke v0.5.0 (*)
+
+solana-define-syscall v4.0.1
+└── solana-program-entrypoint v3.1.1 (*)
+
+solana-pubkey v3.0.0 (*)
+
+solana-pubkey v4.2.0 (*)
+
+solana-system-interface v2.0.0 (*)
+
+solana-system-interface v3.2.0 (*)
+
+syn v1.0.109
+├── anchor-attribute-access-control v1.0.2 (proc-macro)
+│   └── anchor-lang v1.0.1 (*)
+├── anchor-attribute-account v1.0.2 (proc-macro) (*)
+├── anchor-attribute-constant v1.0.2 (proc-macro) (*)
+├── anchor-attribute-error v1.0.2 (proc-macro) (*)
+├── anchor-attribute-event v1.0.2 (proc-macro) (*)
+├── anchor-attribute-program v1.0.2 (proc-macro) (*)
+├── anchor-derive-accounts v1.0.2 (proc-macro) (*)
+├── anchor-derive-serde v1.0.2 (proc-macro) (*)
+├── anchor-derive-space v1.0.2 (proc-macro)
+│   └── anchor-lang v1.0.1 (*)
+├── anchor-syn v1.0.2 (*)
+├── borsh-derive v0.10.4 (proc-macro) (*)
+├── borsh-derive-internal v0.10.4
+│   └── borsh-derive v0.10.4 (proc-macro) (*)
+└── borsh-schema-derive-internal v0.10.4
+    └── borsh-derive v0.10.4 (proc-macro) (*)
+
+syn v2.0.117
+├── borsh-derive v1.6.1 (proc-macro) (*)
+├── bytemuck_derive v1.10.2 (proc-macro)
+│   ├── bytemuck v1.25.0
+│   │   ├── anchor-lang v1.0.1 (*)
+│   │   ├── pythnet-sdk v2.3.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/vendor/pythnet-sdk) (*)
+│   │   ├── solana-address v2.6.1 (*)
+│   │   └── solana-hash v4.4.0 (*)
+│   ├── solana-address v2.6.1 (*)
+│   └── solana-hash v4.4.0 (*)
+├── serde_derive v1.0.228 (proc-macro)
+│   ├── serde v1.0.228 (*)
+│   ├── serde v1.0.228 (*)
+│   ├── solana-address v2.6.1 (*)
+│   ├── solana-clock v3.1.0 (*)
+│   ├── solana-epoch-rewards v3.0.2 (*)
+│   ├── solana-epoch-schedule v3.1.0 (*)
+│   ├── solana-fee-calculator v3.2.1 (*)
+│   ├── solana-hash v4.4.0 (*)
+│   ├── solana-instruction v3.4.0 (*)
+│   ├── solana-last-restart-slot v3.0.1 (*)
+│   ├── solana-loader-v3-interface v6.1.1 (*)
+│   ├── solana-rent v3.1.0 (*)
+│   ├── solana-slot-hashes v3.0.2 (*)
+│   ├── solana-slot-history v3.0.1 (*)
+│   ├── solana-stake-interface v2.0.2 (*)
+│   ├── solana-system-interface v2.0.0 (*)
+│   ├── solana-system-interface v3.2.0 (*)
+│   └── solana-sysvar v3.1.1 (*)
+├── solana-sdk-macro v3.0.1 (proc-macro)
+│   ├── solana-clock v3.1.0 (*)
+│   ├── solana-epoch-rewards v3.0.2 (*)
+│   ├── solana-epoch-schedule v3.1.0 (*)
+│   ├── solana-last-restart-slot v3.0.1 (*)
+│   ├── solana-rent v3.1.0 (*)
+│   └── solana-sysvar v3.1.1 (*)
+├── thiserror-impl v1.0.69 (proc-macro)
+│   └── thiserror v1.0.69
+│       ├── anchor-lang v1.0.1 (*)
+│       ├── anchor-syn v1.0.2 (*)
+│       └── pythnet-sdk v2.3.1 (/Users/michael/Documents/Claude/Projects/crypto-contributor/experiments/cf-invariants-pyth/vendor/pythnet-sdk) (*)
+└── thiserror-impl v2.0.18 (proc-macro)
+    └── thiserror v2.0.18
+        └── solana-secp256k1-recover v3.1.1 (*)
+
+thiserror v1.0.69 (*)
+
+thiserror v2.0.18 (*)
+
+thiserror-impl v1.0.69 (proc-macro) (*)
+
+thiserror-impl v2.0.18 (proc-macro) (*)

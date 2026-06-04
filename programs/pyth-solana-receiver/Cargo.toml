@@ -1,0 +1,44 @@
+[package]
+name = "pyth-solana-receiver"
+version = "0.2.1"
+description = "Pyth Solana Receiver — cf-invariants-pyth port (anchor-lang 0.32.1 -> 1.0.1)"
+edition = "2021"
+license = "Apache-2.0"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "pyth_solana_receiver"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+test-bpf = []
+default = []
+idl-build = ["anchor-lang/idl-build"]
+
+# Pinned to cf-invariants-anchor / cf-invariants-jito stack: anchor-lang
+# 1.0.1 matches Crucible v0.2.0. Upstream pythnet_sdk's solana-program
+# 1.13+ pin is satisfied by the modular solana-program 3.x via the
+# vendored pythnet-sdk wrapper. Direct callouts the receiver uses
+# (keccak, program_memory::sol_memcpy, secp256k1_recover) are taken
+# from the dedicated modular crates instead of solana-program::* in the
+# port (per the §4.1 Jito-port pattern).
+[dependencies]
+# `init-if-needed` mirrors upstream's anchor-lang feature set — receiver's
+# PostUpdate / PostUpdateAtomic / PostTwapUpdate use `init_if_needed` on the
+# price/twap_update_account to allow first-write OR re-write within the same
+# write_authority. The constraint check inside the Accounts struct is what
+# guards re-initialization (`write_authority == Pubkey::default() ||
+# write_authority == write_authority.key()`).
+anchor-lang = { version = "=1.0.1", features = ["init-if-needed"] }
+pythnet-sdk = { path = "../../vendor/pythnet-sdk", features = ["solana-program"] }
+pyth-solana-receiver-sdk = { path = "../../vendor/pyth-solana-receiver-sdk" }
+wormhole-core-bridge-solana = { path = "../../vendor/wormhole-core-bridge-stub" }
+wormhole-raw-vaas = { version = "0.1.3", features = ["ruint", "on-chain"], default-features = false }
+byteorder = "1.4.3"
+solana-keccak-hasher = "3"
+solana-program-memory = "3"
+solana-secp256k1-recover = "3"
+solana-system-interface = { version = "2", features = ["bincode"] }

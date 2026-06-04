@@ -1,0 +1,74 @@
+cf-invariants-pyth
+Copyright 2026 CaliperForge
+
+This product includes software developed by CaliperForge
+(https://caliperforge.com).
+
+------------------------------------------------------------------------
+Third-party attributions
+------------------------------------------------------------------------
+
+This repository includes (or will include, as the port lands) modified
+copies of code originally distributed by the Pyth Data Association as
+part of the `pyth-network/pyth-crosschain` project
+(https://github.com/pyth-network/pyth-crosschain), specifically the
+`pyth-solana-receiver` program at
+`target_chains/solana/programs/pyth-solana-receiver` and supporting
+SDK crates `pyth_solana_receiver_sdk` and `pythnet/pythnet_sdk`.
+
+The upstream code is licensed under the Apache License, Version 2.0:
+
+    Copyright 2025 Pyth Data Association
+    Licensed under the Apache License, Version 2.0.
+    https://github.com/pyth-network/pyth-crosschain
+
+Modifications relative to upstream
+----------------------------------
+
+1. `programs/pyth-solana-receiver/` — a port of `pyth-solana-receiver`
+   from `anchor-lang` `0.32.1` to `anchor-lang` `1.0.1` for use as the
+   cf-invariants-pyth harness target. Build-system and dependency
+   surfaces were updated to the newer anchor-lang; program logic is
+   preserved 1:1 from upstream.
+
+2. `vendor/pyth-solana-receiver-sdk/` — a minimal vendored copy of
+   the upstream `pyth_solana_receiver_sdk` crate sufficient to satisfy
+   the receiver's compile-time imports (`Config`, `DataSource`,
+   `PriceUpdateV2`, `TwapUpdate`, `VerificationLevel`,
+   `PostUpdateAtomicParams`, `PostUpdateParams`,
+   `PostTwapUpdateParams`, PDA seed constants, program ID).
+
+3. `vendor/pythnet-sdk/` — a minimal vendored copy of upstream
+   `pythnet/pythnet_sdk` sufficient to satisfy the receiver's
+   compile-time imports (`MerkleRoot`, `Keccak160`, `Message`,
+   `TwapMessage`, `from_slice`, `WormholeMessage`, `WormholePayload`,
+   `MerklePriceUpdate`).
+
+4. `vendor/wormhole-core-bridge-stub/` — a CaliperForge-authored stub
+   crate exposing only the surface the receiver reads from upstream
+   `wormhole-core-bridge-solana` (the `GuardianSet` account layout,
+   `AccountVariant`, `VaaAccount` deserialize/load, `quorum` helper).
+   The receiver does NOT CPI-call wormhole — it reads the GuardianSet
+   state and verifies VAA signatures locally — so a type-and-state
+   stub is sufficient. Stub source is authored by CaliperForge.
+
+5. `references/pyth_receiver_ref/` — a clean baseline copy of the
+   ported receiver program plus Crucible fuzz fixtures. The
+   fuzz-fixture sources are CaliperForge-authored harness code, not
+   upstream code.
+
+6. `references/pyth_receiver_ref_planted_*/` — CaliperForge-authored
+   "planted-bug" variants of the clean reference. Each variant
+   introduces a small, deliberate logic regression so the Crucible
+   harness can prove the corresponding invariant class fires
+   (planted >= 1 violation) while the clean reference holds
+   (clean = 0 violations).
+
+All files derived from the Pyth upstream remain under Apache License,
+Version 2.0. CaliperForge-authored files (harness, fuzz fixtures, CI,
+README, this NOTICE, the wormhole-core-bridge-stub) are likewise
+licensed under Apache License, Version 2.0 per the LICENSE file at
+the repository root.
+
+The Pyth Data Association and Wormhole Foundation do not endorse this
+project. This harness is maintained independently by CaliperForge.

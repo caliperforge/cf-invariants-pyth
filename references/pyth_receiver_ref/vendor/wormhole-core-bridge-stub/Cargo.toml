@@ -1,0 +1,17 @@
+[package]
+name = "wormhole-core-bridge-solana"
+version = "0.0.1-cf-stub"
+description = "CaliperForge-authored stub of wormhole-core-bridge-solana exposing only the GuardianSet / VaaAccount / quorum surface the Pyth receiver reads. The receiver does NOT CPI-call wormhole — it reads GuardianSet account state and verifies VAA signatures locally — so a type-and-state stub is sufficient."
+license = "Apache-2.0"
+edition = "2021"
+
+[lib]
+crate-type = ["lib"]
+name = "wormhole_core_bridge_solana"
+
+[features]
+no-entrypoint = []
+pro-compatible = []
+
+[dependencies]
+anchor-lang = "=1.0.1"

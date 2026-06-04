@@ -1,0 +1,30 @@
+[package]
+name = "pyth-solana-receiver-sdk"
+version = "1.2.0"
+description = "Minimal vendored slice of pyth_solana_receiver_sdk for cf-invariants-pyth (Apache-2.0)"
+authors = ["Pyth Data Association"]
+license = "Apache-2.0"
+edition = "2021"
+
+[lib]
+crate-type = ["lib"]
+name = "pyth_solana_receiver_sdk"
+
+[features]
+# Upstream gates `pro-compatible` to swap declare_id! between two program IDs.
+# Our vendored slice pins the canonical receiver ID so the workspace deploys
+# under a single, well-known account address; the feature is preserved as a
+# no-op to keep the upstream Cargo.toml feature surface symmetric.
+pro-compatible = []
+
+[dependencies]
+anchor-lang = "=1.0.1"
+# CF-PORT: `borsh` 1.6 (matched to anchor-lang 1.0.1's prelude re-export) at the
+# crate's direct-dep level so the borsh-derive proc-macro (BorshSerialize/
+# BorshDeserialize on PostUpdateParams / PostUpdateAtomicParams /
+# PostTwapUpdateParams) can locate it via `proc_macro_crate::crate_name` and
+# its impls traverse MerklePriceUpdate's borsh-1.6 impls (per vendored pythnet-sdk).
+borsh = { version = "1.6", features = ["derive", "std"] }
+cfg-if = "1.0"
+hex = "0.4.3"
+pythnet-sdk = { path = "../pythnet-sdk", features = ["solana-program"] }

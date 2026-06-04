@@ -1,0 +1,20 @@
+name: Setup Rust + cargo cache
+description: >
+  Standard Rust toolchain + Swatinem cargo cache prelude used by every job in
+  this repo's ci.yml. Composite action so per-job preludes don't drift.
+  Mirrors cf-invariants-jito/.github/actions/setup-rust per the new
+  agents/ai_ops/policies/code_authoring_standard.md §S1.
+inputs:
+  workspaces:
+    description: 'Workspaces input for Swatinem/rust-cache@v2 (paths -> target dirs)'
+    required: false
+    default: '. -> target'
+runs:
+  using: composite
+  steps:
+    - name: Install Rust stable
+      uses: dtolnay/rust-toolchain@stable
+    - name: Cache cargo
+      uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: ${{ inputs.workspaces }}
