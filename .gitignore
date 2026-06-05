@@ -3,3 +3,9 @@
 Cargo.lock.bak
 **/.DS_Store
 .vscode/
+
+# Local build / resolve work logs — never commit
+step0_*.log
+step0_*.log.tail
+*.log.tail
+/*.log
