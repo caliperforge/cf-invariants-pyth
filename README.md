@@ -95,7 +95,7 @@ claim of autonomous discovery.
 ## Project status
 
 Shipped, CI-green on `main` (run
-[`26986538814`](https://github.com/caliperforge/cf-invariants-pyth/actions/runs/26986538814)):
+[`27026942057`](https://github.com/caliperforge/cf-invariants-pyth/actions/runs/27026942057)):
 
 - [x] LICENSE / NOTICE / README born-with the repo (§0 publish_cascade).
 - [x] Composite `setup-rust` action committed (no per-job prelude copy-paste).
